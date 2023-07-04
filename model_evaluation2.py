@@ -48,7 +48,7 @@ start_row = num_train_points + num_val_points
 
 filename = 'model_evaluation2.csv'
 
-for n in range(70,100):
+for n in range(1,137):
 
     num_observations = n
 
@@ -57,16 +57,21 @@ for n in range(70,100):
 
     final_temp, tran_dataset = utils.create_test_data_exp(dataset,num_observations,start_row)
 
-    testX= np.array(tran_dataset[0:])
-    testY = np.array(final_temp[0:])
+    iterations = 100
+    batch_size = 50
 
+    # break
     print_flag = 0
 
 
-    for t in range(100):
+    for t in range(iterations):
+      # predictions
+      start, end = utils.get_rolling_window_bounds(0, len(tran_dataset), batch_size, 2, t)
+      testX= np.array(tran_dataset[start:end])
+      testY = np.array(final_temp[start:end])
       # predictions
       predictions = model.predict(testX)
-      unseen_X = testX.reshape((testX.shape[0], num_observations*2))
+      unseen_X = testX.reshape((testX.shape[0], 137*2))
 
       inv_predictions = concatenate((unseen_X[:,-1:],predictions), axis=1)
 

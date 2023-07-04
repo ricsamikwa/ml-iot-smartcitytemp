@@ -79,3 +79,14 @@ def create_test_data_exp(dataset,num_observations,start_row=0):
     final_temp.append(dataset[(138*(i+1))-1,1])
 
   return final_temp, tran_dataset
+
+def get_rolling_window_bounds(start, end, window_size, step, iteration):
+    """
+    Get the start and end values of the rolling window for a given iteration index and step size.
+
+    Returns:
+    Tuple containing the start and end values of the current window
+    """
+    window_start = start + (iteration * step)
+    window_end = window_start + window_size - 1
+    return window_start, window_end

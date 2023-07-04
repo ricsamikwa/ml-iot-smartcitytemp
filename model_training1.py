@@ -26,6 +26,8 @@ from keras.layers import LeakyReLU
 from numpy import save
 from numpy import load
 from tensorflow.keras.models import load_model
+import time
+import csv
 
 np.random.seed(10)
 
@@ -61,10 +63,21 @@ model.summary()
 
 callback = EarlyStopping(monitor='val_loss', mode='min',verbose=1,patience=80, baseline=0.000073750)
 
+start_time = time.time()
 #training :  epochs and batch size 64
-history = model.fit(trainX, trainY, epochs=50, batch_size=64, callbacks=[callback],
+history = model.fit(trainX, trainY, epochs=50, batch_size=256, callbacks=[callback],
                     validation_data=(validateX, validateY), shuffle=False)
 
+end_time = time.time()
+
+training_time = end_time - start_time
+print("Training time: ", training_time) 
+
+filename = 'training_time.csv'
+
+with open('results/'+filename,'a', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow([1, training_time])
 # model RMSE
 train_score = model.evaluate(trainX, trainY, verbose=1)
 train_score = math.sqrt(train_score)

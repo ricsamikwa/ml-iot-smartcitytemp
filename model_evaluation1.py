@@ -57,17 +57,19 @@ for n in range(1,137):
 
     final_temp, tran_dataset = utils.create_test_data(dataset,num_observations,start_row)
 
-    testX= np.array(tran_dataset[0:])
-    testY = np.array(final_temp[0:])
-
-    # print(testY[30])
+    iterations = 100
+    batch_size =50
 
     # break
     print_flag = 0
 
 
-    for t in range(100):
+    for t in range(iterations):
       # predictions
+      start, end = utils.get_rolling_window_bounds(0, len(tran_dataset), batch_size, 2, t)
+      testX= np.array(tran_dataset[start:end])
+      testY = np.array(final_temp[start:end])
+
       predictions = model.predict(testX)
       unseen_X = testX.reshape((testX.shape[0], num_observations*2))
 
@@ -98,7 +100,7 @@ for n in range(1,137):
       if print_flag == 0:
         print_flag =2
         print('MAE: ',mae.numpy())
-        print(inv_temp[10], inv_predictions[10])
+        print(inv_temp[0], inv_predictions[0])
         print('R squared: ', R.numpy()) 
         print('Test RMSE: %.3f  ' % (rmse))
       # print('Test RMSE: %.3f %% ' % ((rmse/max(inv_temp))*100))
