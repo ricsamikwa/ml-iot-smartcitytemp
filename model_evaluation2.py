@@ -32,7 +32,7 @@ import csv
 """# Data pre-processing"""
 
 # fix random seed for reproducibility
-np.random.seed(10)
+# np.random.seed(10)
 
 model=load_model('models/pad_model.h5')
 model.summary()
@@ -54,13 +54,11 @@ for n in range(1,137):
 
     print("Number of observations: " + str(num_observations))
 
-
     final_temp, tran_dataset = utils.create_test_data_exp(dataset,num_observations,start_row)
 
     iterations = 100
     batch_size = 50
 
-    # break
     print_flag = 0
 
 

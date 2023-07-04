@@ -32,7 +32,7 @@ import csv
 """# Data pre-processing"""
 
 # fix random seed for reproducibility
-np.random.seed(10)
+# np.random.seed(10)
 
 model=load_model('models/new_pad_model.h5')
 model.summary()
@@ -48,25 +48,28 @@ start_row = num_train_points + num_val_points
 
 filename = 'model_evaluation3.csv'
 
-for n in range(70,100):
+for n in range(1,137):
 
     num_observations = n
 
     print("Number of observations: " + str(num_observations))
 
-
     final_temp, tran_dataset = utils.create_test_data_exp(dataset,num_observations,start_row)
 
-    testX= np.array(tran_dataset[0:])
-    testY = np.array(final_temp[0:])
+    iterations = 100
+    batch_size = 50
 
     print_flag = 0
 
 
-    for t in range(100):
+    for t in range(iterations):
+      # predictions
+      start, end = utils.get_rolling_window_bounds(0, len(tran_dataset), batch_size, 2, t)
+      testX= np.array(tran_dataset[start:end])
+      testY = np.array(final_temp[start:end])
       # predictions
       predictions = model.predict(testX)
-      unseen_X = testX.reshape((testX.shape[0], num_observations*2))
+      unseen_X = testX.reshape((testX.shape[0], 137*2))
 
       inv_predictions = concatenate((unseen_X[:,-1:],predictions), axis=1)
 
@@ -94,13 +97,14 @@ for n in range(70,100):
 
       if print_flag == 0:
         print_flag =2
-        print('MAE: ',mae)
+        print('MAE: ',mae.numpy())
         print(inv_temp[10], inv_predictions[10])
-        print('R score: ', R) 
+        print('R squared: ', R.numpy()) 
         print('Test RMSE: %.3f  ' % (rmse))
       # print('Test RMSE: %.3f %% ' % ((rmse/max(inv_temp))*100))
 
       with open('results/'+filename,'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([num_observations, rmse, mae, R])
+        writer.writerow([num_observations, rmse, mae.numpy(),R.numpy()])
+
 
