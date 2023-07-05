@@ -90,3 +90,18 @@ def get_rolling_window_bounds(start, end, window_size, step, iteration):
     window_start = start + (iteration * step)
     window_end = window_start + window_size - 1
     return window_start, window_end
+
+def flatten_inner_arrays(arr):
+    flattened = []
+    for item in arr:
+        if isinstance(item, list):
+            inner_array = []
+            for inner_item in item:
+                if isinstance(inner_item, list):
+                    inner_array.extend(inner_item)
+                else:
+                    inner_array.append(inner_item)
+            flattened.append(inner_array)
+        else:
+            flattened.append(item.flatten())
+    return flattened

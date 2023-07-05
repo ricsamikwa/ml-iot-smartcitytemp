@@ -34,7 +34,13 @@ print(dataset.shape)
 scaler  = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
 
-dense_final_temp, dense_tran_dataset = utils.create_training_data_dense(dataset)
+dense_final_temp, tran_dataset = utils.create_training_data_with_pre_padding_exp(dataset)
+
+# print(tran_dataset[0])
+
+dense_tran_dataset = utils.flatten_inner_arrays(tran_dataset)
+
+# print(dense_tran_dataset[0])
 
 num_train_points = int(len(dense_tran_dataset)* 0.7) # approx 70% of the dataset
 num_val_points = int(len(dense_tran_dataset)* 0.15)
@@ -50,7 +56,7 @@ testY = np.array(dense_final_temp[num_train_points+num_val_points:])
 
 print(trainX.shape, validateX.shape, testX.shape, len(trainY), len(validateY), len(testY))
 
-# save to npy file ############# exp 1
+# # save to npy file ############# exp 1
 save('dataset/dense_final_temp1.npy', dense_final_temp)
 save('dataset/dense_tran_dataset1.npy', dense_tran_dataset)
 

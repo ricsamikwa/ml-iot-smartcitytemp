@@ -14,9 +14,9 @@ import matplotlib.patches as mpatches
 from numpy import concatenate
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.layers import Dropout
-from tensorflow.python.keras.layers import Activation
-from tensorflow.python.keras.layers import LSTM
+from keras.layers import Flatten
+from keras.layers.convolutional import Conv1D
+from keras.layers.convolutional import MaxPooling1D
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
@@ -46,20 +46,21 @@ testY = np.array(exp_final_temp[num_train_points+num_val_points:])
 
 print(trainX.shape, validateX.shape, testX.shape, len(trainY), len(validateY), len(testY))
 
-dense_model = Sequential()
-dense_model.add(Dense(100, input_dim=274, activation='relu'))
-dense_model.add(Dense(10,  activation='relu'))
-dense_model.add(Dense(1)) # Output layer with a single neuron
-
-dense_model.compile(loss='mse', optimizer='adam')
-
-dense_model.summary()
+cnn_model = Sequential()
+cnn_model.add(Conv1D(filters=64, kernel_size=2, activation='relu', input_shape=(None, trainX.shape[2])))
+cnn_model.add(MaxPooling1D(pool_size=2))
+cnn_model.add(Conv1D(filters=16, kernel_size=2, activation='relu'))
+cnn_model.add(MaxPooling1D(pool_size=2))
+cnn_model.add(Flatten())
+cnn_model.add(Dense(50, activation='relu'))
+cnn_model.add(Dense(1))
+cnn_model.compile(optimizer='adam', loss='mse')
 
 callback = EarlyStopping(monitor='val_loss', mode='min',verbose=1,patience=50, baseline=0.000073750)
 
 start_time = time.time()
 #training :  epochs and batch size 64
-history = dense_model.fit(trainX, trainY, epochs=50, batch_size=256, callbacks=[callback],
+history = cnn_model.fit(trainX, trainY, epochs=50, batch_size=256, callbacks=[callback],
                     validation_data=(validateX, validateY), shuffle=False)
 
 end_time = time.time()
@@ -71,21 +72,21 @@ filename = 'training_time.csv'
 
 with open('results/'+filename,'a', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow([4, training_time])
+    writer.writerow([5, training_time])
 
 
 # model RMSE
-train_score = dense_model.evaluate(trainX, trainY, verbose=1)
+train_score = cnn_model.evaluate(trainX, trainY, verbose=1)
 train_score = math.sqrt(train_score)
 
-validation_score = dense_model.evaluate(validateX, validateY, verbose=1)
+validation_score = cnn_model.evaluate(validateX, validateY, verbose=1)
 validation_score = math.sqrt(validation_score)
 print('Train Score: %.2f  RMSE' % (train_score))
 print('Validation Score: %.2f  RMSE' % (validation_score))
 
 
 # save model
-dense_model.save('models/dense_model.h5')
+cnn_model.save('models/cnn_model.h5')
 print('Model Saved!')
  
 # load model
