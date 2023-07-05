@@ -34,7 +34,7 @@ import csv
 # fix random seed for reproducibility
 # np.random.seed(10)
 
-model=load_model('models/pad_model.h5')
+model=load_model('models/model.h5')
 model.summary()
 
 dataset = pandas.read_pickle("dataset/dataset.pkl")
@@ -46,7 +46,7 @@ num_train_points = 1398 # approx 70% of the dataset
 num_val_points = 300
 start_row = num_train_points + num_val_points
 
-filename = 'model_evaluation2.csv'
+filename = 'model_evaluation1_3.csv'
 
 for n in range(1,137):
 
