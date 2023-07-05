@@ -31,8 +31,8 @@ import csv
 
 np.random.seed(10)
 
-exp_final_temp = load('dataset/dense_final_temp1.npy')
-exp_tran_dataset = load('dataset/dense_tran_dataset1.npy')
+exp_final_temp = load('dataset/exp_final_temp1.npy')
+exp_tran_dataset = load('dataset/exp_tran_dataset1.npy')
 
 num_train_points = int(len(exp_tran_dataset)* 0.7) # approx 70% of the dataset
 num_val_points = int(len(exp_tran_dataset)* 0.15)
@@ -60,7 +60,7 @@ callback = EarlyStopping(monitor='val_loss', mode='min',verbose=1,patience=50, b
 
 start_time = time.time()
 #training :  epochs and batch size 64
-history = cnn_model.fit(trainX, trainY, epochs=50, batch_size=256, callbacks=[callback],
+history = cnn_model.fit(trainX, trainY, epochs=3, batch_size=256, callbacks=[callback],
                     validation_data=(validateX, validateY), shuffle=False)
 
 end_time = time.time()

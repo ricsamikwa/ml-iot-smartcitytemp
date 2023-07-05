@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
+os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
 
 from math import sqrt
 import numpy as np
@@ -14,9 +14,9 @@ import matplotlib.patches as mpatches
 from numpy import concatenate
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import MaxPooling1D
+from tensorflow.python.keras.layers import Dropout
+from tensorflow.python.keras.layers import Activation
+from tensorflow.python.keras.layers import LSTM
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
@@ -26,9 +26,9 @@ from keras.layers import LeakyReLU
 from numpy import save
 from numpy import load
 from tensorflow.keras.models import load_model
-import time
-import csv
 import utils
+import csv
+
 """# Data pre-processing"""
 
 # fix random seed for reproducibility
@@ -67,14 +67,9 @@ for n in range(1,137):
       start, end = utils.get_rolling_window_bounds(0, len(tran_dataset), batch_size, 2, t)
       testX= np.array(tran_dataset[start:end])
       testY = np.array(final_temp[start:end])
-
-    #   print(testX.shape)
-      newTestX = np.array(utils.flatten_inner_arrays(testX))
-    #   print(newTestX.shape)
-    #   break
       # predictions
-      predictions = model.predict(newTestX)
-      unseen_X = newTestX.reshape((newTestX.shape[0], 137*2))
+      predictions = model.predict(testX)
+      unseen_X = testX.reshape((testX.shape[0], 137*2))
 
       inv_predictions = concatenate((unseen_X[:,-1:],predictions), axis=1)
 
