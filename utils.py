@@ -59,6 +59,20 @@ def create_test_data(dataset,num_observations,start_row=0):
 
   return final_temp, tran_dataset
 
+def create_naive_test_data(dataset,num_observations,start_row=0):
+
+  final_temp = []
+  tran_dataset = []
+  last_temp = []
+
+  rows = math.floor(len(dataset)/138)
+  for i in range(start_row,rows):
+    tran_dataset.append(dataset[138*i:(138*i)+num_observations,:])
+    last_temp.append(dataset[(138*i)+num_observations,1])
+    final_temp.append(dataset[(138*(i+1))-1,1])
+
+  return final_temp, tran_dataset, last_temp
+
 def create_test_data_exp(dataset,num_observations,start_row=0):
 
   final_temp = []
