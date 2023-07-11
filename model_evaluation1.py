@@ -34,7 +34,7 @@ import csv
 # fix random seed for reproducibility
 # np.random.seed(10)
 
-model=load_model('models/model.h5')
+model=load_model('models/lstm_model.h5')
 model.summary()
 
 dataset = pandas.read_pickle("dataset/dataset.pkl")
