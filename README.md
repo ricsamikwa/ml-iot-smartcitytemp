@@ -47,15 +47,20 @@ The results will be added at the end of the evaluation file if already available
 To evaluate the saved trained LSTM model without padding:
 ```
 python3 model_evaluation1.py
+```
 
 To evaluate the saved trained LSTM model with padding:
 ```
-python3 model_evaluation2.py 
+python3 model_evaluation2.py
+```
 
 To evaluate the saved trained 1D CNN model with padding:
+
 ```
 python3 cnn_model_evaluation2.py
+```
 
 To evaluate the saved trained Dense model with padding:
 ```
-python3 dense_model_evaluation2.py 
+python3 dense_model_evaluation2.py
+```
