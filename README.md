@@ -1,1 +1,29 @@
 # Machine Learning-based Energy Optimisation in Smart City Internet of Things
+
+## Usage
+
+The pre-trained LSTM, 1D-CNN, and FFNN models are in `models` folder.
+
+### Running pre-trained models 
+
+To run inference on the pre-trained models using sample inputs: 
+```
+python3 run_model.py 
+```
+The output shows the input shape for each model and makes a prediction using a sample input. The actual input samples are defined in input_formats.py. For LSTM, there are two input types; without and with padding. The inputs are scaled with MinMaxScaler(feature_range=(0, 1)) over the dataset, and then the predictions are scaled back, as the steps in this file 03_LSTM_prediction/model_evaluation1.py
+
+## Model Training
+
+### Data processing
+
+To download unstructured dataset into `dataset` folder:
+```
+python3 data_processing1.py 
+```
+The result is a downloaded `dataset.pkl` file in `dataset` folder AND a restructured dataset without padding `normal_tran_dataset.npy` and `normal_final_temp.npy` representing the multivariate temperature and humidity time series, and the end temperature values respectively.
+
+To create a dataset with variable pre-padding for the multivariate time series :
+```
+python3 data_processing2.py 
+```
+The result is a restructured dataset with pre-padding `exp_final_temp1.npy` and `exp_tran_dataset1.npy` representing the multivariate temperature and humidity time series, and the end temperature values respectively. 
