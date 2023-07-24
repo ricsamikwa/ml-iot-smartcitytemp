@@ -10,9 +10,11 @@ To run inference on the pre-trained models using sample inputs:
 ```
 python3 run_model.py 
 ```
-The output shows the input shape for each model and makes a prediction using a sample input. The actual input samples are defined in input_formats.py. For LSTM, there are two input types; without and with padding. The inputs are scaled with MinMaxScaler(feature_range=(0, 1)) over the dataset, and then the predictions are scaled back, as the steps in this file model_evaluation1.py
+The output shows the input shape for each model and makes a prediction using sample inputs. The actual input samples are defined in input_formats.py. For LSTM, there are two input types; without and with padding. The inputs are scaled with MinMaxScaler(feature_range=(0, 1)) over the dataset, and then the predictions are scaled back, as the steps in this file model_evaluation1.py
 
-## Model Training
+## Model Training 
+
+NB: This will retrain the models and overwrite the existing models in the `models` folder.
 
 ### Data processing
 
@@ -41,6 +43,8 @@ The files `cnn_model_training2.npy` and `dense_model_training2.npy` retrain and 
 The folder `results` contain the results of the model evaluation for the LSTM (`model_evaluation2.py`), 1D-CNN (`cnn_model_evaluation2.py`), and FFNN (`dense_model_evaluation2.py`).
 
 ### evaluation scripts 
+
+NB: This will re-evaluate the models and append the results to the existing files in the `results` folder.
 
 The results will be added at the end of the evaluation file if already available.
 
