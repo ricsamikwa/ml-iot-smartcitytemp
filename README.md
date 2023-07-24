@@ -68,3 +68,11 @@ To evaluate the saved trained Dense model with padding:
 ```
 python3 dense_model_evaluation2.py
 ```
+
+## TensorFlow Lite
+
+To convert the pre-trained model to TFLite versions:
+```
+python3 convert_models.py
+```
+Set settings to target device's
