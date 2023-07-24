@@ -1,1 +1,1 @@
-# Machine-Learning-based-Energy-Optimisation-in-Smart-City-Sensors
+# Machine Learning-based Energy Optimisation in Smart City Internet of Things
