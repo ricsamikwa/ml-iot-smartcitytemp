@@ -73,6 +73,9 @@ def create_naive_test_data(dataset,num_observations,start_row=0):
 
   return final_temp, tran_dataset, last_temp
 
+def conv(value):
+   return value* 5 + 0.15
+
 def create_test_data_exp(dataset,num_observations,start_row=0):
 
   final_temp = []
